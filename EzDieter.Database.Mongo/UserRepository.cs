@@ -16,7 +16,8 @@ namespace EzDieter.Database.Mongo
         {
             _client = client;
             _configuration = configuration;
-            _users = client.GetDatabase(configuration["database-name"]).GetCollection<User>(configuration["users"]);
+            //_users = client.GetDatabase(configuration["database-name"]).GetCollection<User>(configuration["users"]);
+            _users = client.GetDatabase("ez-dieter").GetCollection<User>("users");
         }
 
         public async Task<IEnumerable<User>> GetAll()

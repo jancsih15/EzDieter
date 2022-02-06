@@ -19,7 +19,7 @@ namespace EzDieter.Database.Mongo
             _ingredients = client.GetDatabase(configuration["database-name"]).GetCollection<Ingredient>(configuration["ingredients"]);
         }
         
-        public async Task<IEnumerable<Ingredient>> GetAll()
+        public Task<IEnumerable<Ingredient>> GetAll()
         {
             throw new System.NotImplementedException();
         }
