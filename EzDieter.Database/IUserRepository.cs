@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Reflection.Metadata;
 using System.Threading.Tasks;
@@ -9,9 +10,9 @@ namespace EzDieter.Database
     public interface IUserRepository
     {
         Task<IEnumerable<User>> GetAll();
-        Task<User> GetById(string id);
+        Task<User> GetById(Guid? id);
         Task Add(User user);
         Task Update(User user);
-        Task Delete(string id);
+        Task Delete(Guid id);
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using EzDieter.Domain;
 using Microsoft.Extensions.Configuration;
@@ -16,8 +17,8 @@ namespace EzDieter.Database.Mongo
         {
             _client = client;
             _configuration = configuration;
-            //_users = client.GetDatabase(configuration["database-name"]).GetCollection<User>(configuration["users"]);
-            _users = client.GetDatabase("ez-dieter").GetCollection<User>("users");
+            _users = client.GetDatabase(configuration["database-name"]).GetCollection<User>(configuration["users"]);
+            //_users = client.GetDatabase("ez-dieter").GetCollection<User>("users");
         }
 
         public async Task<IEnumerable<User>> GetAll()
@@ -25,24 +26,26 @@ namespace EzDieter.Database.Mongo
             return await _users.AsQueryable().ToListAsync();
         }
 
-        public Task<User> GetById(string id)
+        public async Task<User> GetById(Guid? id)
         {
-            throw new System.NotImplementedException();
+            var filter = Builders<User>.Filter.Eq(x => x.Id, id);
+            var result = await _users.FindAsync(filter).Result.FirstAsync();
+            return result;
         }
 
-        public Task Add(User user)
+        public async Task Add(User user)
         {
-            throw new System.NotImplementedException();
+            await _users.InsertOneAsync(user);
         }
 
-        public Task Update(User user)
+        public async Task Update(User user)
         {
-            throw new System.NotImplementedException();
+            await _users.ReplaceOneAsync(Builders<User>.Filter.Eq(x => x.Id, user.Id),user);
         }
 
-        public Task Delete(string id)
+        public async Task Delete(Guid id)
         {
-            throw new System.NotImplementedException();
+            await _users.FindOneAndDeleteAsync(Builders<User>.Filter.Eq(x => x.Id, id));
         }
     }
 }
