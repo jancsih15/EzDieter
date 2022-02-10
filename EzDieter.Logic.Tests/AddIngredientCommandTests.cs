@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using EzDieter.Database;
@@ -45,7 +46,35 @@ namespace EzDieter.Logic.Tests
             Assert.Equal("Name can't be empty!", result.Message);
         }
 
-        
+        [Fact]
+        public async Task TODO()
+        {
+            var test = Guid.NewGuid();
+            var badId = Guid.NewGuid();
+            while (badId == test)
+            {
+                test = Guid.NewGuid();
+            }
+            var request = new GetIngredientById.Query(test);
+            var request2 = new GetIngredientById.Query(badId);
+            var ingredientRepositoryMock = new Mock<IIngredientRepository>();
+            ingredientRepositoryMock
+                .Setup(x => x.GetById(It.Is<Guid>(guid => guid == test)))
+                .ReturnsAsync(new Ingredient() {Id = test});
+            
+            // Happy Path
+            
+            var sut = new GetIngredientById.Handler(ingredientRepositoryMock.Object);
+            var result = await sut.Handle(request, CancellationToken.None);
+            
+            Assert.NotNull(result.Ingredient);
+            
+            // Sad Path
+            
+            var result2 = await sut.Handle(request2, CancellationToken.None);
+            Assert.Null(result2.Ingredient);
+        }
+
 
         private static bool IngredientsAreEqual(Ingredient x, AddIngredientCommand.Command request)
         {
