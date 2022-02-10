@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using EzDieter.Domain;
 using Microsoft.Extensions.Configuration;
@@ -8,40 +9,45 @@ namespace EzDieter.Database.Mongo
 {
     public class IngredientRepository : IIngredientRepository
     {
-        private readonly IMongoClient _client;
-        private readonly IConfiguration _configuration;
-        private IMongoCollection<Ingredient> _ingredients;
+        private readonly IMongoCollection<Ingredient> _ingredients;
 
         public IngredientRepository(IMongoClient client, IConfiguration configuration)
         {
-            _client = client;
-            _configuration = configuration;
             _ingredients = client.GetDatabase(configuration["database-name"]).GetCollection<Ingredient>(configuration["ingredients"]);
         }
         
-        public Task<IEnumerable<Ingredient>> GetAll()
+        public async Task<IEnumerable<Ingredient>> GetAll()
         {
-            throw new System.NotImplementedException();
+            return await _ingredients.AsQueryable().ToListAsync();
         }
 
-        public Task<Ingredient> GetById(string id)
+        // TODO is async needed at list? or any good?
+        public async Task<IEnumerable<Ingredient>> GetByName(string name)
         {
-            throw new System.NotImplementedException();
+            var result = await _ingredients.FindAsync(x => x.Name == name);
+            return await result.ToListAsync(); 
         }
 
-        public Task Add(Ingredient ingredient)
+        public async Task<Ingredient> GetById(Guid id)
         {
-            throw new System.NotImplementedException();
+            var result = await _ingredients
+                .FindAsync(x => x.Id == id);
+            return result?.SingleOrDefault();
         }
 
-        public Task Update(Ingredient ingredient)
+        public async Task Add(Ingredient ingredient)
         {
-            throw new System.NotImplementedException();
+            await _ingredients.InsertOneAsync(ingredient);
         }
 
-        public Task Delete(string id)
+        public async Task Update(Ingredient ingredient)
         {
-            throw new System.NotImplementedException();
+            await _ingredients.ReplaceOneAsync(x => x.Id == ingredient.Id, ingredient);
+        }
+
+        public async Task Delete(Guid id)
+        {
+            await _ingredients.FindOneAndDeleteAsync(x => x.Id == id);
         }
     }
 }

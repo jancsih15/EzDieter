@@ -1,12 +1,11 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using EzDieter.Database;
 using EzDieter.Domain;
 using MediatR;
 
-namespace EzDieter.Logic
+namespace EzDieter.Logic.UserServices
 {
     public class GetUsersHandler : IRequestHandler<GetUsersQuery,IEnumerable<User>>
     {

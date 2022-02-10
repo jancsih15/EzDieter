@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using EzDieter.Api.Helpers;
 using EzDieter.Domain;
 using EzDieter.Logic;
+using EzDieter.Logic.UserServices;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -17,7 +18,7 @@ namespace EzDieter.Api.Controllers
     [Route("[controller]")]
     public class UserController : ControllerBase
     {
-        private ISender _sender;
+        private readonly ISender _sender;
         private readonly IMediator _mediator;
 
         public UserController(ISender sender, IMediator mediator)

@@ -5,7 +5,7 @@ using EzDieter.Database;
 using EzDieter.Domain;
 using MediatR;
 
-namespace EzDieter.Logic
+namespace EzDieter.Logic.UserServices
 {
     public static class UpdateUser
     {

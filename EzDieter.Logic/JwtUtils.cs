@@ -7,7 +7,7 @@ using EzDieter.Domain;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 
-namespace EzDieter.Api.Helpers
+namespace EzDieter.Logic
 {
     public interface IJwtUtils
     {

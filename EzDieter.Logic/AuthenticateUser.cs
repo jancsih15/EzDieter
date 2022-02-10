@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using EzDieter.Database;
 using EzDieter.Domain;
 using MediatR;
-using EzDieter.Api.Helpers;
 
 namespace EzDieter.Logic
 {

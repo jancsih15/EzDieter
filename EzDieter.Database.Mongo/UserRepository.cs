@@ -9,16 +9,11 @@ namespace EzDieter.Database.Mongo
 {
     public class UserRepository : IUserRepository
     {
-        private readonly IMongoClient _client;
-        private readonly IConfiguration _configuration;
-        private IMongoCollection<User> _users;
+        private readonly IMongoCollection<User> _users;
 
         public UserRepository(IMongoClient client, IConfiguration configuration)
         {
-            _client = client;
-            _configuration = configuration;
             _users = client.GetDatabase(configuration["database-name"]).GetCollection<User>(configuration["users"]);
-            //_users = client.GetDatabase("ez-dieter").GetCollection<User>("users");
         }
 
         public async Task<IEnumerable<User>> GetAll()

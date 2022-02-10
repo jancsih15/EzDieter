@@ -1,12 +1,11 @@
 ﻿using System.Collections.Generic;
-using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using EzDieter.Database;
 using EzDieter.Domain;
 using MediatR;
 
-namespace EzDieter.Logic
+namespace EzDieter.Logic.UserServices
 {
     public static class GetAllUsers
     {

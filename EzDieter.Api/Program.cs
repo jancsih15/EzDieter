@@ -5,6 +5,7 @@ using EzDieter.Database;
 using EzDieter.Database.Mongo;
 using EzDieter.Domain;
 using EzDieter.Logic;
+using EzDieter.Logic.UserServices;
 using MediatR;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
@@ -29,19 +30,24 @@ builder.Services.AddSwaggerGen(x => x.CustomSchemaIds(x => x.FullName));
 var dbname = builder.Configuration["database-name"];
 
 
-//database
-//builder.Services.AddSingleton<MongoClientFactory>();
-//builder.Services.AddScoped(provider => provider.GetRequiredService<MongoClientFactory>().Create());
-builder.Services.AddScoped<IMongoClient>(provider => new MongoClient("mongodb://localhost:27017"));
+// Database
+builder.Services.AddSingleton<IMongoClient, MongoClient>(x =>
+{
+    var uri = x.GetRequiredService<IConfiguration>()["MongoUri"];
+    return new MongoClient(uri);
+});
+
+// Repositories
 builder.Services.AddScoped<IDailyRepository,DailyRepository>();
 builder.Services.AddScoped<IIngredientRepository,IngredientRepository>();
 builder.Services.AddScoped<IMealRepository,MealRepository>();
 builder.Services.AddScoped<IUserRepository,UserRepository>();
 
+// Helpers
 builder.Services.AddScoped<IJwtUtils,JwtUtils>();
 
+// Mediator (Services)
 builder.Services.AddMediatR(typeof(GetUsersQuery));
-//builder.Services.AddMediatR(typeof(StartupBase).Assembly);
 
 var app = builder.Build();
 
@@ -52,6 +58,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+// Middlewares TODO add exception handler middleware 
 app.UseMiddleware<JwtMiddleware>();
 
 app.UseHttpsRedirection();

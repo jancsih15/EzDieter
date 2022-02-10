@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using EzDieter.Database;
 using EzDieter.Logic;
+using EzDieter.Logic.UserServices;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;

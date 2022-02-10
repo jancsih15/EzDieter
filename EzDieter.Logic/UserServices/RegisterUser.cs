@@ -5,9 +5,8 @@ using System.Threading.Tasks;
 using EzDieter.Database;
 using EzDieter.Domain;
 using MediatR;
-using BCrypt.Net;
 
-namespace EzDieter.Logic
+namespace EzDieter.Logic.UserServices
 {
     public static class RegisterUser
     {
