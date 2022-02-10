@@ -28,6 +28,6 @@ namespace EzDieter.Logic.IngredientServices
             }
         }
         
-        public record Response(Ingredient Ingredient);
+        public record Response(Ingredient? Ingredient);
     }
 }

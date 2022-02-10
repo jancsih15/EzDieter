@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using EzDieter.Database;
 using EzDieter.Domain;
+using EzDieter.Logic.UserServices;
 using MediatR;
 
 namespace EzDieter.Logic.IngredientServices
@@ -24,10 +25,10 @@ namespace EzDieter.Logic.IngredientServices
             {
                 var ingredient = await _ingredientRepository.GetById(request.Id);
                 await _ingredientRepository.Delete(request.Id);
-                return new Response(ingredient);
+                return new Response(ingredient?.Id);
             }
         }
 
-        public record Response(Ingredient Ingredient);
+        public record Response(Guid? Id);
     }
 }

@@ -9,7 +9,7 @@ namespace EzDieter.Logic.IngredientServices
 {
     public static class UpdateIngredientCommand
     {
-        public record Command(Ingredient Ingredient) : IRequest<Response>;
+        public record Command(Ingredient? Ingredient) : IRequest<Response>;
 
         public class Handler : IRequestHandler<Command, Response>
         {
@@ -27,6 +27,6 @@ namespace EzDieter.Logic.IngredientServices
             }
         }
 
-        public record Response(Ingredient Ingredient);
+        public record Response(Ingredient? Ingredient);
     }
 }

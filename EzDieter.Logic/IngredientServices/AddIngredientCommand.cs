@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using EzDieter.Database;
 using EzDieter.Domain;
 using MediatR;
+using Microsoft.IdentityModel.Tokens;
 
 namespace EzDieter.Logic.IngredientServices
 {
@@ -29,9 +30,11 @@ namespace EzDieter.Logic.IngredientServices
 
             public async Task<Response> Handle(Command request, CancellationToken cancellationToken)
             {
+                if (request.Name.IsNullOrEmpty())
+                    return new Response(Guid.Empty, false, "Name can't be empty!");
                 var ingredient = new Ingredient
                 {
-                    Id = new Guid(),
+                    Id = Guid.NewGuid(),
                     Name = request.Name,
                     Calorie = request.Calorie,
                     Carbohydrate = request.Carbohydrate,
@@ -41,10 +44,10 @@ namespace EzDieter.Logic.IngredientServices
                     Volume = request.Volume
                 };
                 await _ingredientRepository.Add(ingredient);
-                return new Response(ingredient);
+                return new Response(ingredient.Id, true, "");
             }
         }
 
-        public record Response(Ingredient Ingredient);
+        public record Response(Guid Id, bool Success, string Message);
     }
 }

@@ -9,38 +9,44 @@ namespace EzDieter.Database.Mongo
 {
     public class IngredientRepository : IIngredientRepository
     {
-        private readonly IMongoCollection<Ingredient> _ingredients;
+        private readonly IMongoCollection<Ingredient?> _ingredients;
 
         public IngredientRepository(IMongoClient client, IConfiguration configuration)
         {
             _ingredients = client.GetDatabase(configuration["database-name"]).GetCollection<Ingredient>(configuration["ingredients"]);
         }
         
-        public async Task<IEnumerable<Ingredient>> GetAll()
+        public async Task<IEnumerable<Ingredient?>> GetAll()
         {
             return await _ingredients.AsQueryable().ToListAsync();
         }
 
         // TODO is async needed at list? or any good?
-        public async Task<IEnumerable<Ingredient>> GetByName(string name)
+        public async Task<IEnumerable<Ingredient?>> GetByName(string name)
         {
             var result = await _ingredients.FindAsync(x => x.Name == name);
             return await result.ToListAsync(); 
         }
 
-        public async Task<Ingredient> GetById(Guid id)
+        public async Task<Ingredient?> GetById(Guid id)
         {
             var result = await _ingredients
                 .FindAsync(x => x.Id == id);
-            return result?.SingleOrDefault();
+            var any = await result.AnyAsync();
+            if (any)
+            {
+                return result.SingleOrDefault();
+            }
+
+            return null;
         }
 
-        public async Task Add(Ingredient ingredient)
+        public async Task Add(Ingredient? ingredient)
         {
             await _ingredients.InsertOneAsync(ingredient);
         }
 
-        public async Task Update(Ingredient ingredient)
+        public async Task Update(Ingredient? ingredient)
         {
             await _ingredients.ReplaceOneAsync(x => x.Id == ingredient.Id, ingredient);
         }

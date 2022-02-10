@@ -74,7 +74,9 @@ namespace EzDieter.Api.Controllers
                 volumeType,
                 volume
                 ));
-            return Ok(response);
+            if (!response.Success)
+                return BadRequest(response.Message);
+            return Ok(response.Id);
         }
 
         
@@ -82,7 +84,7 @@ namespace EzDieter.Api.Controllers
         [AllowAnonymous2]
         [HttpPut]
         [Route("Update")]
-        public async Task<IActionResult> Update(Ingredient ingredient)
+        public async Task<IActionResult> Update(Ingredient? ingredient)
         {
             var response = await _mediator.Send(new UpdateIngredientCommand.Command(ingredient));
             return response.Ingredient is null ? NotFound("The updated ingredient wasn't found!") : Ok(response);
@@ -94,10 +96,9 @@ namespace EzDieter.Api.Controllers
         public async Task<IActionResult> Delete(Guid id)
         {
             var response = await _mediator.Send(new DeleteIngredientCommand.Command(id));
-            //if (response.Ingredient == null)
-            //    NotFound("There ingredient wasn't found!");
-            // TODO why can't i check for null
-            return Ok(response.Ingredient);
+            if (response.Id == null)
+                return NotFound("The ingredient wasn't found!");
+            return Ok(response.Id);
         }
     }
 }
