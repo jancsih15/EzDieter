@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using EzDieter.Database;
@@ -6,12 +7,13 @@ using EzDieter.Domain;
 using MediatR;
 using Microsoft.IdentityModel.Tokens;
 
-namespace EzDieter.Logic.IngredientServices
+namespace EzDieter.Logic.MealServices
 {
-    public static class AddIngredientCommand
+    public static class AddDishCommand
     {
         public record Command(
             string Name,
+            List<DishIngredient> MealIngs,
             float Calorie,
             float Carbohydrate,
             float Fat,
@@ -21,23 +23,24 @@ namespace EzDieter.Logic.IngredientServices
 
         public class Handler : IRequestHandler<Command, Response>
         {
-            private readonly IIngredientRepository _ingredientRepository;
+            private readonly IDishRepository _dishRepository;
 
-            public Handler(IIngredientRepository ingredientRepository)
+            public Handler(IDishRepository dishRepository)
             {
-                _ingredientRepository = ingredientRepository;
+                _dishRepository = dishRepository;
             }
 
             public async Task<Response> Handle(Command request, CancellationToken cancellationToken)
             {
                 if (request.Name.IsNullOrEmpty())
-                    return new Response(null, false, "Name can't be empty!");
+                    return new Response(Guid.Empty, false, "Name can't be empty!");
                 if (request.Volume == 0)
-                    return new Response(null, false, "Volume cannot be 0!");
-                var ingredient = new Ingredient
+                    return new Response(Guid.Empty, false, "Volume cannot be 0!");
+                var dish = new Dish
                 {
                     Id = Guid.NewGuid(),
                     Name = request.Name,
+                    DishIngredients = request.MealIngs,
                     Calorie = request.Calorie,
                     Carbohydrate = request.Carbohydrate,
                     Fat = request.Fat,
@@ -45,11 +48,11 @@ namespace EzDieter.Logic.IngredientServices
                     VolumeType = request.VolumeType,
                     Volume = request.Volume
                 };
-                await _ingredientRepository.Add(ingredient);
-                return new Response(ingredient, true, "");
+                await _dishRepository.Add(dish);
+                return new Response(dish.Id, true, "");
             }
         }
 
-        public record Response(Ingredient? Ingredient, bool Success, string Message);
+        public record Response(Guid Id, bool Success, string Message);
     }
 }

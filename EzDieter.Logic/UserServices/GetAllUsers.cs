@@ -28,7 +28,7 @@ namespace EzDieter.Logic.UserServices
             {
                 //All the business logic
                 var users = await _userRepository.GetAll();
-                return users == null ? null : new Response(users);
+                return new Response(users);
             }
         }
         

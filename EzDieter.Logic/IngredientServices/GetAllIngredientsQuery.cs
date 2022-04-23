@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using EzDieter.Database;
@@ -8,9 +7,9 @@ using MediatR;
 
 namespace EzDieter.Logic.IngredientServices
 {
-    public static class GetIngredientById
+    public static class GetAllIngredientsQuery
     {
-        public record Query(Guid Id) : IRequest<Response>;
+        public record Query() : IRequest<Response>;
 
         public class Handler : IRequestHandler<Query,Response>
         {
@@ -23,11 +22,11 @@ namespace EzDieter.Logic.IngredientServices
 
             public async Task<Response> Handle(Query request, CancellationToken cancellationToken)
             {
-                var ingredient = await _ingredientRepository.GetById(request.Id);
-                return new Response(ingredient);
+                var ingredients = await _ingredientRepository.GetAll();
+                return new Response(ingredients);
             }
         }
         
-        public record Response(Ingredient? Ingredient);
+        public record Response(IEnumerable<Ingredient?> Ingredients);
     }
 }

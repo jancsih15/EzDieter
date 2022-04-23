@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using MongoDB.Bson.Serialization.Attributes;
 
 namespace EzDieter.Domain
@@ -14,5 +15,7 @@ namespace EzDieter.Domain
         
         [BsonElement("PasswordHash")]
         public string PasswordHash { get; set; } = null!;
+
+        public float TDEEs { get; set; }
     }
 }

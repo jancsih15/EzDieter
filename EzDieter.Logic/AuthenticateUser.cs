@@ -17,7 +17,7 @@ namespace EzDieter.Logic
         public class Handler : IRequestHandler<Query,Response>
         {
             private readonly IUserRepository _userRepository;
-            private IJwtUtils _jwtUtils;
+            private readonly IJwtUtils _jwtUtils;
 
             public Handler(IUserRepository userRepository, IJwtUtils jwtUtils)
             {
@@ -32,15 +32,16 @@ namespace EzDieter.Logic
                 
                 //validation
                 if (user is null || !BCryptNet.Verify(request.Password, user.PasswordHash))
-                    //TODO create own middleware for exceptions
-                    throw new Exception("Username or password is incorrect");
+                    return new Response(null, "", "Username or password is incorrect!", false);
+                
                 //generate jwt token
                 var jwtToken = _jwtUtils.GenerateJwtToken(user);
 
-                return new Response(user, jwtToken);
+                user.PasswordHash = "";
+                return new Response(user, jwtToken, "Login Successful", true);
             }
         }
 
-        public record Response(User User, string JwtToken);
+        public record Response(User? User, string JwtToken, string Message, bool Success);
     }
 }

@@ -47,7 +47,7 @@ namespace EzDieter.Logic.Tests
         }
 
         [Fact]
-        public async Task TODO()
+        public async Task Handle_WhenCalledWithMissingName_ShouldReturnCorrectResponse()
         {
             var test = Guid.NewGuid();
             var badId = Guid.NewGuid();
@@ -55,8 +55,8 @@ namespace EzDieter.Logic.Tests
             {
                 test = Guid.NewGuid();
             }
-            var request = new GetIngredientById.Query(test);
-            var request2 = new GetIngredientById.Query(badId);
+            var request = new GetIngredientByIdQuery.Query(test);
+            var request2 = new GetIngredientByIdQuery.Query(badId);
             var ingredientRepositoryMock = new Mock<IIngredientRepository>();
             ingredientRepositoryMock
                 .Setup(x => x.GetById(It.Is<Guid>(guid => guid == test)))
@@ -64,7 +64,7 @@ namespace EzDieter.Logic.Tests
             
             // Happy Path
             
-            var sut = new GetIngredientById.Handler(ingredientRepositoryMock.Object);
+            var sut = new GetIngredientByIdQuery.Handler(ingredientRepositoryMock.Object);
             var result = await sut.Handle(request, CancellationToken.None);
             
             Assert.NotNull(result.Ingredient);

@@ -30,15 +30,18 @@ namespace EzDieter.Database.Mongo
 
         public async Task<Ingredient?> GetById(Guid id)
         {
-            var result = await _ingredients
-                .FindAsync(x => x.Id == id);
-            var any = await result.AnyAsync();
-            if (any)
-            {
-                return result.SingleOrDefault();
-            }
-
-            return null;
+            var result = await _ingredients.FindAsync(x => x.Id == id);
+            
+            return result.SingleOrDefault(); 
+            // var result = await _ingredients
+            //     .FindAsync(x => x.Id == id);
+            // var any = await result.AnyAsync();
+            // if (any)
+            // {
+            //     return result.SingleOrDefault();
+            // }
+            //
+            // return null;
         }
 
         public async Task Add(Ingredient? ingredient)
