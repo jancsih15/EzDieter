@@ -9,7 +9,7 @@ namespace EzDieter.Database.Mongo
 {
     public class IngredientRepository : IIngredientRepository
     {
-        private readonly IMongoCollection<Ingredient?> _ingredients;
+        private readonly IMongoCollection<Ingredient> _ingredients;
 
         public IngredientRepository(IMongoClient client, IConfiguration configuration)
         {
@@ -21,7 +21,6 @@ namespace EzDieter.Database.Mongo
             return await _ingredients.AsQueryable().ToListAsync();
         }
 
-        // TODO is async needed at list? or any good?
         public async Task<IEnumerable<Ingredient?>> GetByName(string name)
         {
             var result = await _ingredients.FindAsync(x => x.Name == name);
@@ -33,15 +32,6 @@ namespace EzDieter.Database.Mongo
             var result = await _ingredients.FindAsync(x => x.Id == id);
             
             return result.SingleOrDefault(); 
-            // var result = await _ingredients
-            //     .FindAsync(x => x.Id == id);
-            // var any = await result.AnyAsync();
-            // if (any)
-            // {
-            //     return result.SingleOrDefault();
-            // }
-            //
-            // return null;
         }
 
         public async Task Add(Ingredient? ingredient)

@@ -9,7 +9,7 @@ using MediatR;
 
 namespace EzDieter.Logic.UserServices
 {
-    public static class RegisterUser
+    public static class RegisterUserCommand
     {
         public record Command(string Username, string Password) : IRequest<Response>;
 

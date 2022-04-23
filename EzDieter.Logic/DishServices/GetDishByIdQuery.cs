@@ -3,10 +3,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using EzDieter.Database;
 using EzDieter.Domain;
-using EzDieter.Logic.IngredientServices;
 using MediatR;
 
-namespace EzDieter.Logic.MealServices
+namespace EzDieter.Logic.DishServices
 {
     public static class GetDishByIdQuery
     {

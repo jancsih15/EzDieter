@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Threading.Tasks;
 using EzDieter.Api.Helpers;
 using EzDieter.Domain;
@@ -22,7 +21,6 @@ namespace EzDieter.Api.Controllers
             _mediator = mediator;
         }
         
-        // While testing they will be anonymous2
 
         [AllowAnonymous2]
         [HttpGet]

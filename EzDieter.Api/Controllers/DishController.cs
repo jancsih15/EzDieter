@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using EzDieter.Api.Helpers;
 using EzDieter.Domain;
-using EzDieter.Logic.IngredientServices;
-using EzDieter.Logic.MealServices;
+using EzDieter.Logic.DishServices;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -22,8 +21,6 @@ namespace EzDieter.Api.Controllers
         {
             _mediator = mediator;
         }
-        
-        // While testing they will be anonymous2
 
         [AllowAnonymous2]
         [HttpGet]

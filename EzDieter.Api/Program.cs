@@ -4,22 +4,17 @@ using EzDieter.Api;
 using EzDieter.Api.Helpers;
 using EzDieter.Database;
 using EzDieter.Database.Mongo;
-using EzDieter.Domain;
 using EzDieter.Logic;
 using EzDieter.Logic.UserServices;
 using MediatR;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 
-string wanted_path = Path.GetDirectoryName(Path.GetDirectoryName(System.IO.Directory.GetCurrentDirectory()));
-System.Diagnostics.Process.Start(wanted_path + "\\EzDieter\\DockerCompose.bat");
+string wantedPath = Path.GetDirectoryName(Path.GetDirectoryName(Directory.GetCurrentDirectory()));
+System.Diagnostics.Process.Start(wantedPath + "\\EzDieter\\DockerCompose.bat");
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,9 +24,10 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(x => x.CustomSchemaIds(x => x.FullName));
-builder.Services
-    .AddControllers(options => options.UseDateOnlyTimeOnlyStringConverters())
-    .AddJsonOptions(options => options.UseDateOnlyTimeOnlyStringConverters());
+//Delete
+// builder.Services
+//     .AddControllers(options => options.UseDateOnlyTimeOnlyStringConverters())
+//     .AddJsonOptions(options => options.UseDateOnlyTimeOnlyStringConverters());
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(
@@ -42,7 +38,7 @@ builder.Services.AddCors(options =>
 });
 
 
-var dbname = builder.Configuration["database-name"];
+//var dbname = builder.Configuration["database-name"];
 
 
 // Database
@@ -60,7 +56,7 @@ builder.Services.AddScoped<IUserRepository,UserRepository>();
 
 // Helpers
 builder.Services.AddScoped<IJwtUtils,JwtUtils>();
-builder.Services.AddMediatR(typeof(GetAllUsers));
+builder.Services.AddMediatR(typeof(GetUserByIdQuery));
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

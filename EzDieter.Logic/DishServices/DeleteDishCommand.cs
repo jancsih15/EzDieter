@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using EzDieter.Database;
 using MediatR;
 
-namespace EzDieter.Logic.MealServices
+namespace EzDieter.Logic.DishServices
 {
     public static class DeleteDishCommand
     {

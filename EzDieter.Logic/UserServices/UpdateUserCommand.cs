@@ -9,7 +9,7 @@ using BCryptNet = BCrypt.Net.BCrypt;
 
 namespace EzDieter.Logic.UserServices
 {
-    public static class UpdateUser
+    public static class UpdateUserCommand
     {
         public record Command(User User, string Password) : IRequest<Response>;
         

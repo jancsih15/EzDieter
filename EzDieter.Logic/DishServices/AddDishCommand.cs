@@ -7,7 +7,7 @@ using EzDieter.Domain;
 using MediatR;
 using Microsoft.IdentityModel.Tokens;
 
-namespace EzDieter.Logic.MealServices
+namespace EzDieter.Logic.DishServices
 {
     public static class AddDishCommand
     {

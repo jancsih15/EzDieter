@@ -13,7 +13,7 @@ namespace EzDieter.Database.Mongo
 
         public DishRepository(IMongoClient client, IConfiguration configuration)
         {
-            _dishes = client.GetDatabase(configuration["database-name"]).GetCollection<Dish>(configuration["meals"]);
+            _dishes = client.GetDatabase(configuration["database-name"]).GetCollection<Dish>(configuration["dishes"]);
         }
 
 

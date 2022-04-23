@@ -56,7 +56,7 @@ namespace EzDieter.Logic.DayServices
                 };
                 await _dayRepository.Add(newDay);
                 
-                // calculate TDEE from all data available
+                // calculate TDEE from all data available, not finished
                 var daysForTDEE = (await _dayRepository.GetAll(request.User.Id)).OrderBy(x => x.Date).OrderBy(x => x.Date);
                 if (daysForTDEE.Any())
                 {

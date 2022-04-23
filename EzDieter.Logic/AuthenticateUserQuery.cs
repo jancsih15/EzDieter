@@ -1,16 +1,14 @@
-﻿using System;
-using System.IdentityModel.Tokens.Jwt;
-using BCryptNet = BCrypt.Net.BCrypt;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using EzDieter.Database;
 using EzDieter.Domain;
 using MediatR;
+using BCryptNet = BCrypt.Net.BCrypt;
 
-namespace EzDieter.Logic
+namespace EzDieter.Logic.UserServices
 {
-    public static class AuthenticateUser
+    public static class AuthenticateUserQuery
     {
         public record Query(string Username, string Password) : IRequest<Response>;
         

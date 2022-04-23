@@ -29,7 +29,6 @@ namespace EzDieter.Domain
 
     public class DayDish
     {
-        //public Guid Id { get; set; }
         public string Name { get; set; }
         public string VolumeType { get; set; }
         public float Volume { get; set; }

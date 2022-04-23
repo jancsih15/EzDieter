@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using EzDieter.Domain;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
@@ -14,7 +13,7 @@ namespace EzDieter.Api.Helpers
 
         public void OnAuthorization(AuthorizationFilterContext context)
         {
-            // skip authorization if action is decorated with [AllowAnonymous] attribute
+            // skip authorization if action is decorated with [AllowAnonymous2] attribute
             var allowAnonymous = context.ActionDescriptor.EndpointMetadata.OfType<AllowAnonymous2Attribute>().Any();
             if (allowAnonymous)
                 return;

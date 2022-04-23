@@ -7,7 +7,7 @@ using MediatR;
 
 namespace EzDieter.Logic.UserServices
 {
-    public static class GetUserById
+    public static class GetUserByIdQuery
     {
         public record Query(Guid? Id) : IRequest<Response>;
         

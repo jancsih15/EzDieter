@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using EzDieter.Database;
 using EzDieter.Logic;
 using EzDieter.Logic.UserServices;
 using MediatR;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Configuration;
 
 namespace EzDieter.Api.Helpers
 {
@@ -28,7 +26,7 @@ namespace EzDieter.Api.Helpers
                 if (userId != null)
                 {
                     // attach user to context on successful jwt validation
-                    var response = await mediator.Send(new GetUserById.Query(userId));
+                    var response = await mediator.Send(new GetUserByIdQuery.Query(userId));
                     var user = response.User;
                     context.Items["User"] = user;
                 }

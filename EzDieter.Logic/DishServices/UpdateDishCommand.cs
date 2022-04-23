@@ -4,7 +4,7 @@ using EzDieter.Database;
 using EzDieter.Domain;
 using MediatR;
 
-namespace EzDieter.Logic.MealServices
+namespace EzDieter.Logic.DishServices
 {
     public static class UpdateDishCommand
     {

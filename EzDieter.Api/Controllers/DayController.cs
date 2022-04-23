@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text.Json.Serialization;
 using System.Threading.Tasks;
-using EzDieter.Api.Helpers;
 using EzDieter.Domain;
 using EzDieter.Logic.DayServices;
-using EzDieter.Logic.UserServices;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,7 +15,7 @@ namespace EzDieter.Api.Controllers
     {
         private readonly IMediator _mediator;
 
-        public DayController(ISender sender, IMediator mediator)
+        public DayController(IMediator mediator)
         {
             _mediator = mediator;
         }
@@ -48,18 +45,18 @@ namespace EzDieter.Api.Controllers
 
         [HttpPost]
         [Route("Add")]
-        public async Task<IActionResult> Add(DayHelper day)
+        public async Task<IActionResult> Add(AddDayHelper addDay)
         {
             var user = (User)HttpContext.Items["User"];
             var response = await _mediator.Send(new AddDayCommand.Command(
-                DateTime.Parse(day.Date), 
+                DateTime.Parse(addDay.Date), 
                 user,
-                day.DayDishes,
-                day.Calorie,
-                day.Carbohydrate,
-                day.Fat,
-                day.Protein,
-                day.Weight
+                addDay.DayDishes,
+                addDay.Calorie,
+                addDay.Carbohydrate,
+                addDay.Fat,
+                addDay.Protein,
+                addDay.Weight
             ));
             if (!response.Success)
                 return BadRequest(response.Message);
@@ -68,20 +65,20 @@ namespace EzDieter.Api.Controllers
         
         [HttpPut]
         [Route("Update")]
-        public async Task<IActionResult> Update(DayHelper2 day)
+        public async Task<IActionResult> Update(UpdateDayHelper updateDay)
         {
             var user = (User)HttpContext.Items["User"];
-            day.Id = user.Id;
+            updateDay.Id = user.Id;
             var dayData = new Day{
-                Id = day.Id,
+                Id = updateDay.Id,
                 UserId = user.Id,
-                Date = DateTime.Parse(day.Date),
-                DayDishes = day.DayDishes,
-                Calorie = day.Calorie,
-                Carbohydrate = day.Carbohydrate,
-                Fat = day.Fat,
-                Protein = day.Protein,
-                Weight = day.Weight
+                Date = DateTime.Parse(updateDay.Date),
+                DayDishes = updateDay.DayDishes,
+                Calorie = updateDay.Calorie,
+                Carbohydrate = updateDay.Carbohydrate,
+                Fat = updateDay.Fat,
+                Protein = updateDay.Protein,
+                Weight = updateDay.Weight
             };
             var response = await _mediator.Send(new UpdateDayCommand.Command(dayData));
             return response.Day is null ? NotFound("The updated day wasn't found!") : Ok(response);
@@ -100,7 +97,7 @@ namespace EzDieter.Api.Controllers
     
     
 
-    public class DayHelper
+    public class AddDayHelper
     {
         public string Date { get; set; }
         public List<DayDish> DayDishes { get; set; }
@@ -114,7 +111,7 @@ namespace EzDieter.Api.Controllers
 
         public float Weight { get; set; }
     }
-    public class DayHelper2
+    public class UpdateDayHelper
     {
         public Guid Id { get; set; }
         public string Date { get; set; }
